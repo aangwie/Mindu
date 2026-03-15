@@ -16,6 +16,7 @@ class SettingsController extends Controller
         $site_logo = Setting::get('site_logo');
         $site_favicon = Setting::get('site_favicon');
         $site_address = Setting::get('site_address');
+        $question_order = Setting::get('question_order', 'ordered');
 
         // SMTP Settings
         $smtp = [
@@ -28,7 +29,7 @@ class SettingsController extends Controller
             'mail_from_name' => Setting::get('mail_from_name'),
         ];
 
-        return view('admin.settings', compact('admin', 'site_logo', 'site_favicon', 'site_address', 'smtp'));
+        return view('admin.settings', compact('admin', 'site_logo', 'site_favicon', 'site_address', 'smtp', 'question_order'));
     }
 
     public function update(Request $request)
@@ -41,6 +42,7 @@ class SettingsController extends Controller
             'site_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:800',
             'site_favicon' => 'nullable|string',
             'site_address' => 'required|string',
+            'question_order' => 'required|in:ordered,random',
             // SMTP Validation
             'mail_host' => 'nullable|string',
             'mail_port' => 'nullable|string',
@@ -61,6 +63,7 @@ class SettingsController extends Controller
         
         Setting::set('site_favicon', $validated['site_favicon'] ?? '');
         Setting::set('site_address', $validated['site_address']);
+        Setting::set('question_order', $validated['question_order']);
 
         // Update SMTP Settings
         Setting::set('mail_host', $validated['mail_host'] ?? '');

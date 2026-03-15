@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\UpdateSettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('tes');
+    return redirect()->route('login');
 });
 
 // Auth Routes
@@ -22,15 +22,31 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
     Route::get('/activate/{token}', [AuthController::class, 'activate'])->name('activate');
+    
+    // Forgot Password
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+    // Verify Email Notification Page
+    Route::get('/verify-email', [AuthController::class, 'showVerifyEmail'])->name('verification.notice');
+    Route::post('/resend-activation', [AuthController::class, 'resendActivation'])->name('verification.resend');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Student Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/tes', [StudentController::class, 'showTest'])->name('tes');
+    Route::get('/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/tes/{question_number?}', [StudentController::class, 'showTest'])->name('tes');
     Route::post('/tes/simpan', [StudentController::class, 'submitAnswer'])->name('test.submit');
+    Route::post('/tes/reset', [StudentController::class, 'resetTest'])->name('test.reset');
+    
+    Route::get('/riwayat', [StudentController::class, 'history'])->name('student.history');
+    Route::get('/profil', [StudentController::class, 'profile'])->name('student.profile');
     Route::put('/profil/update', [StudentController::class, 'updateProfile'])->name('profile.update');
+    
     Route::get('/hasil/{result}', [StudentController::class, 'showResult'])->name('student.result');
     Route::get('/unduh-hasil/{result}', [TestResultController::class, 'download'])->name('download-result');
 });

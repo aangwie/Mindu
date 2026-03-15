@@ -104,6 +104,16 @@
                                 class="block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-blue-500 focus:border-blue-500 transition dark:text-white">{{ old('site_address', $site_address) }}</textarea>
                             <p class="mt-2 text-[10px] text-slate-500 dark:text-slate-400 font-medium">Alamat ini akan muncul di bagian bawah PDF hasil tes.</p>
                         </div>
+
+                        <div>
+                            <label for="question_order" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Urutan Soal Tes</label>
+                            <select id="question_order" name="question_order" required
+                                class="block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-blue-500 focus:border-blue-500 transition dark:text-white">
+                                <option value="ordered" {{ (old('question_order', $question_order) == 'ordered') ? 'selected' : '' }}>Urut (Berdasarkan ID)</option>
+                                <option value="random" {{ (old('question_order', $question_order) == 'random') ? 'selected' : '' }}>Acak (Randomize)</option>
+                            </select>
+                            <p class="mt-2 text-[10px] text-slate-500 dark:text-slate-400 font-medium">Pengaturan ini menentukan urutan soal yang muncul saat siswa mengerjakan tes.</p>
+                        </div>
                     </div>
                 </div>
 

@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -85,12 +88,110 @@ class AuthController extends Controller
 
         try {
             $this->configureMail();
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\ActivationMail($user, $token));
-            return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan cek email Anda untuk mengaktifkan akun.');
+            Mail::to($user->email)->send(new \App\Mail\ActivationMail($user, $token));
+            return redirect()->route('verification.notice')->with('email', $user->email);
         } catch (\Exception $e) {
-            // If mail fails, user is still created but inactive. Better to show error.
-            return redirect()->route('login')->with('success', 'Registrasi berhasil! Namun gagal mengirim email aktivasi. Silakan hubungi admin. Error: ' . $e->getMessage());
+            return redirect()->route('verification.notice')->with([
+                'email' => $user->email,
+                'error' => 'Gagal mengirim email aktivasi: ' . $e->getMessage()
+            ]);
         }
+    }
+
+    public function showVerifyEmail()
+    {
+        $email = session('email');
+        if (!$email) return redirect()->route('login');
+        return view('auth.verify-email', compact('email'));
+    }
+
+    public function resendActivation(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $user = User::where('email', $request->email)->where('is_active', false)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'User tidak ditemukan atau sudah aktif.']);
+        }
+
+        // Keep old token or generate new? Let's use the one in DB.
+        $token = $user->activation_token;
+        if (!$token) {
+            $token = Str::random(64);
+            $user->activation_token = $token;
+            $user->save();
+        }
+
+        try {
+            $this->configureMail();
+            Mail::to($user->email)->send(new \App\Mail\ActivationMail($user, $token));
+            return back()->with('success', 'Email aktivasi telah dikirim ulang.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['email' => 'Gagal mengirim email: ' . $e->getMessage()]);
+        }
+    }
+
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email|exists:users,email']);
+        
+        $token = Str::random(64);
+        
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            ['token' => $token, 'created_at' => now()]
+        );
+
+        try {
+            $this->configureMail();
+            Mail::to($request->email)->send(new \App\Mail\ResetPasswordMail($token, $request->email));
+            return back()->with('success', 'Tautan reset password telah dikirim ke email Anda.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['email' => 'Gagal mengirim email: ' . $e->getMessage()]);
+        }
+    }
+
+    public function showResetPassword(Request $request, $token)
+    {
+        return view('auth.reset-password', ['token' => $token, 'email' => $request->email]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $reset = DB::table('password_reset_tokens')
+                    ->where('email', $request->email)
+                    ->where('token', $request->token)
+                    ->first();
+
+        if (!$reset) {
+            return back()->withErrors(['email' => 'Token reset tidak valid atau sudah kedaluwarsa.']);
+        }
+
+        // Check expiry (1 hour)
+        $createdAt = \Illuminate\Support\Carbon::parse($reset->created_at);
+        if (now()->diffInMinutes($createdAt) > 60) {
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+            return back()->withErrors(['email' => 'Token reset sudah kedaluwarsa.']);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return redirect()->route('login')->with('success', 'Password berhasil diubah. Silakan login.');
     }
 
     public function activate($token)

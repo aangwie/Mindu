@@ -40,13 +40,13 @@
                 <div>
                     <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Username</label>
                     <input id="name" name="name" type="text" required value="{{ old('name') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</label>
                     <input id="email" name="email" type="email" required value="{{ old('email') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
@@ -81,49 +81,49 @@
                 <div>
                     <label for="full_name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nama Lengkap</label>
                     <input id="full_name" name="full_name" type="text" required value="{{ old('full_name') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
                     <label for="nisn" class="block text-sm font-medium text-slate-700 dark:text-slate-300">NISN</label>
                     <input id="nisn" name="nisn" type="text" required value="{{ old('nisn') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
                     <label for="current_school" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nama Sekolah Saat Ini</label>
                     <input id="current_school" name="current_school" type="text" required value="{{ old('current_school') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
                     <label for="school_origin" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Asal Sekolah (Target Lanjutan)</label>
                     <input id="school_origin" name="school_origin" type="text" required value="{{ old('school_origin') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
                     <label for="pob" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Tempat Lahir</label>
                     <input id="pob" name="pob" type="text" required value="{{ old('pob') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
                     <label for="dob" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Tanggal Lahir</label>
                     <input id="dob" name="dob" type="date" required value="{{ old('dob') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div class="md:col-span-2">
                     <label for="phone" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nomor HP (Opsional)</label>
                     <input id="phone" name="phone" type="text" value="{{ old('phone') }}"
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">
                 </div>
 
                 <div class="md:col-span-2">
                     <label for="address" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Alamat Rumah</label>
                     <textarea id="address" name="address" rows="3" required
-                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 dark:text-white">{{ old('address') }}</textarea>
+                        class="mt-1 block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-slate-900 dark:text-white">{{ old('address') }}</textarea>
                 </div>
 
                 <div class="md:col-span-2 mt-6">
