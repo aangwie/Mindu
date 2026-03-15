@@ -82,17 +82,23 @@ php artisan migrate --seed
 
 ### 5. Jalankan Aplikasi
 
-> **Penting:** Anda perlu menjalankan **dua terminal** secara bersamaan.
+> [!IMPORTANT]
+> Sistem ini menggunakan **Tailwind CSS v4** dan **Vite 6**. Anda **WAJIB** menjalankan perintah berikut agar tampilan (CSS) dan fitur interaktif (seperti sidebar) berfungsi dengan normal.
 
-**Terminal 1 — Backend:**
+Anda perlu menjalankan **dua terminal** secara bersamaan:
+
+**Terminal 1 — Backend (PHP):**
 ```bash
 php artisan serve
 ```
 
-**Terminal 2 — Frontend (CSS/JS):**
+**Terminal 2 — Frontend (Vite/CSS):**
 ```bash
 npm run dev
 ```
+
+> [!TIP]
+> Di **Dashboard Admin**, kami telah menambahkan **Indikator Status Vite**. Jika indikator berwarna merah, artinya Anda belum menjalankan `npm run dev` di Terminal 2.
 
 Akses aplikasi di: [http://localhost:8000](http://localhost:8000)
 
