@@ -38,7 +38,7 @@ class AuthController extends Controller
                 return redirect()->intended('/admin');
             }
 
-            return redirect()->intended('/tes');
+            return redirect()->intended('/dashboard');
         }
 
         return back()->withErrors([
@@ -90,7 +90,8 @@ class AuthController extends Controller
             $this->configureMail();
             Mail::to($user->email)->send(new \App\Mail\ActivationMail($user, $token));
             return redirect()->route('verification.notice')->with('email', $user->email);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             return redirect()->route('verification.notice')->with([
                 'email' => $user->email,
                 'error' => 'Gagal mengirim email aktivasi: ' . $e->getMessage()
@@ -101,7 +102,8 @@ class AuthController extends Controller
     public function showVerifyEmail()
     {
         $email = session('email');
-        if (!$email) return redirect()->route('login');
+        if (!$email)
+            return redirect()->route('login');
         return view('auth.verify-email', compact('email'));
     }
 
@@ -126,7 +128,8 @@ class AuthController extends Controller
             $this->configureMail();
             Mail::to($user->email)->send(new \App\Mail\ActivationMail($user, $token));
             return back()->with('success', 'Email aktivasi telah dikirim ulang.');
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             return back()->withErrors(['email' => 'Gagal mengirim email: ' . $e->getMessage()]);
         }
     }
@@ -139,19 +142,20 @@ class AuthController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email|exists:users,email']);
-        
+
         $token = Str::random(64);
-        
+
         DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $request->email],
-            ['token' => $token, 'created_at' => now()]
+        ['email' => $request->email],
+        ['token' => $token, 'created_at' => now()]
         );
 
         try {
             $this->configureMail();
             Mail::to($request->email)->send(new \App\Mail\ResetPasswordMail($token, $request->email));
             return back()->with('success', 'Tautan reset password telah dikirim ke email Anda.');
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             return back()->withErrors(['email' => 'Gagal mengirim email: ' . $e->getMessage()]);
         }
     }
@@ -170,9 +174,9 @@ class AuthController extends Controller
         ]);
 
         $reset = DB::table('password_reset_tokens')
-                    ->where('email', $request->email)
-                    ->where('token', $request->token)
-                    ->first();
+            ->where('email', $request->email)
+            ->where('token', $request->token)
+            ->first();
 
         if (!$reset) {
             return back()->withErrors(['email' => 'Token reset tidak valid atau sudah kedaluwarsa.']);
@@ -212,7 +216,7 @@ class AuthController extends Controller
     private function configureMail()
     {
         $settings = \App\Models\Setting::all()->pluck('value', 'key');
-        
+
         config([
             'mail.mailers.smtp.host' => $settings['mail_host'] ?? config('mail.mailers.smtp.host'),
             'mail.mailers.smtp.port' => $settings['mail_port'] ?? config('mail.mailers.smtp.port'),
