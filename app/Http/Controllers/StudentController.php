@@ -253,7 +253,7 @@ class StudentController extends Controller
     public function showResult(TestResult $result)
     {
         // Ensure user can only see their own result (or is admin)
-        if ($result->testSession->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+        if ($result->testSession->user_id != Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
 

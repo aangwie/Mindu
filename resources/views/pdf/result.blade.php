@@ -353,7 +353,12 @@
     <div class="section-title">Rekomendasi Akhir</div>
     <div class="recommendation-box">
         <div style="font-size: 12px; color: #64748b;">Berdasarkan tes kepribadian Holland RIASEC, Anda direkomendasikan masuk:</div>
-        <div class="recommendation-value">{{ $result->recommendation }}</div>
+        <div class="recommendation-value" style="margin-bottom: 4px;">{{ $result->recommendation }}</div>
+        @if(!empty($recommendationDetails) && count($recommendationDetails) > 0)
+        <div style="font-size: 16px; font-weight: bold; color: #1e40af; margin-bottom: 12px;">
+            Jurusan: {{ $recommendationDetails[0]['major'] }}
+        </div>
+        @endif
         <div class="recommendation-reason">
             <strong>Alasan:</strong><br>
             {{ $result->final_reasoning }}

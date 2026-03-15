@@ -82,7 +82,7 @@ class AuthController extends Controller
             'school_origin' => $validated['school_origin'],
             'nisn' => $validated['nisn'],
             'role' => 'student',
-            'is_active' => false,
+            'is_active' => true,
             'activation_token' => $token,
         ]);
 

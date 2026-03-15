@@ -50,7 +50,12 @@
                     </h3>
                     <div class="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 border border-indigo-100 dark:border-indigo-800 p-8 rounded-2xl text-center">
                         <h4 class="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-2">Anda disarankan masuk</h4>
-                        <div class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4">{{ $result->recommendation }}</div>
+                        <div class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-2">{{ $result->recommendation }}</div>
+                        @if(!empty($recommendationDetails) && count($recommendationDetails) > 0)
+                        <div class="text-xl md:text-2xl font-bold text-indigo-700 dark:text-indigo-300 mb-6">
+                            Jurusan: {{ $recommendationDetails[0]['major'] }}
+                        </div>
+                        @endif
                         <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg mx-auto">
                             {{ $result->final_reasoning }}
                         </p>

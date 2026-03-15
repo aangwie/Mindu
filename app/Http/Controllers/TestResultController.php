@@ -12,7 +12,7 @@ class TestResultController extends Controller
     public function download(TestResult $result)
     {
         // Enforce security
-        if (auth()->id() !== $result->testSession->user_id && auth()->user()->role !== 'admin') {
+        if (auth()->id() != $result->testSession->user_id && auth()->user()->role !== 'admin') {
             abort(403);
         }
 
