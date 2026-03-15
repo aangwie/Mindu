@@ -187,7 +187,7 @@
                         <li><a href="{{ route('home') }}" class="hover:text-white transition">Beranda</a></li>
                         <li><a href="{{ route('about') }}" class="hover:text-white transition">Tentang Kami</a></li>
                         <li><a href="{{ route('login') }}" class="hover:text-white transition">Masuk</a></li>
-                        <li><a href="{{ route('register') }}" class="hover:text-white transition">Daftar Rekening</a></li>
+                        <li><a href="{{ route('register') }}" class="hover:text-white transition">Daftar</a></li>
                     </ul>
                 </div>
                 <div>
