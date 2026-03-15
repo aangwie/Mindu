@@ -37,14 +37,15 @@ class AdminSeeder extends Seeder
 
         // Add a sample student for testing
         User::updateOrCreate(
-        ['email' => 'student@example.com'],
+        ['email' => 'putri@gmail.com'],
         [
-            'name' => 'student',
-            'password' => Hash::make('password'),
+            'name' => 'putri',
+            'password' => Hash::make('12344321'),
             'role' => 'student',
-            'full_name' => 'Siswa Percobaan',
+            'full_name' => 'Putri Anjani',
             'school_origin' => 'SMP Negeri 1 Testing',
             'phone' => '08987654321',
+            'is_active' => true,
         ]
         );
     }
