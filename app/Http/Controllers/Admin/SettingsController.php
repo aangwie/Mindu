@@ -83,4 +83,25 @@ class SettingsController extends Controller
 
         return redirect()->route('admin.settings.edit')->with('success', 'Pengaturan berhasil diperbarui.');
     }
+
+    public function tcEdit()
+    {
+        $about_us = Setting::get('about_us', '');
+        $terms_conditions = Setting::get('terms_conditions', '');
+
+        return view('admin.tc', compact('about_us', 'terms_conditions'));
+    }
+
+    public function tcUpdate(Request $request)
+    {
+        $validated = $request->validate([
+            'about_us' => 'nullable|string',
+            'terms_conditions' => 'nullable|string',
+        ]);
+
+        Setting::set('about_us', $validated['about_us'] ?? '');
+        Setting::set('terms_conditions', $validated['terms_conditions'] ?? '');
+
+        return redirect()->route('admin.tc.edit')->with('success', 'Konten T&C berhasil diperbarui.');
+    }
 }

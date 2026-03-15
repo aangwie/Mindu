@@ -11,9 +11,12 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UpdateSettingsController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+use App\Http\Controllers\FrontendController;
+
+// Frontend Routes
+Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/tentang-kami', [FrontendController::class, 'about'])->name('about');
+Route::get('/syarat-dan-ketentuan', [FrontendController::class, 'terms'])->name('terms');
 
 // Auth Routes
 Route::middleware('guest')->group(function () {
@@ -68,6 +71,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Settings
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    
+    // T&C Settings
+    Route::get('/tc', [SettingsController::class, 'tcEdit'])->name('tc.edit');
+    Route::put('/tc', [SettingsController::class, 'tcUpdate'])->name('tc.update');
 
     // Update Settings
     Route::get('/update-settings', [UpdateSettingsController::class, 'index'])->name('update-settings.index');
