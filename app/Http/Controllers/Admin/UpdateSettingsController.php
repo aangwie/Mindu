@@ -19,9 +19,9 @@ class UpdateSettingsController extends Controller
     public function updateToken(Request $request)
     {
         $request->validate([
-            'github_token' => ['required', 'string', 'regex:/^github_pat_[a-zA-Z0-9]+$/'],
+            'github_token' => ['required', 'string', 'regex:/^github_pat_[a-zA-Z0-9_]+$/'],
         ], [
-            'github_token.regex' => 'Format token harus github_pat_xxxx',
+            'github_token.regex' => 'Format token harus github_pat_xxxx (boleh menyertakan angka, huruf, dan underscore)',
         ]);
 
         Setting::set('github_token', $request->github_token);
