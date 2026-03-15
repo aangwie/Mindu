@@ -19,9 +19,9 @@ class UpdateSettingsController extends Controller
     public function updateToken(Request $request)
     {
         $request->validate([
-            'github_token' => ['required', 'string', 'regex:/^github_pat_[a-zA-Z0-9_]+$/'],
+            'github_token' => ['required', 'string', 'regex:/^(ghp_|github_pat_)[a-zA-Z0-9_]+$/'],
         ], [
-            'github_token.regex' => 'Format token harus github_pat_xxxx (boleh menyertakan angka, huruf, dan underscore)',
+            'github_token.regex' => 'Format token harus diawali dengan ghp_ atau github_pat_',
         ]);
 
         Setting::set('github_token', $request->github_token);
@@ -155,6 +155,13 @@ class UpdateSettingsController extends Controller
      */
     private function runShell(string $command, string $cwd): array
     {
+        // Append env variable to avoid password interactive prompts
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $command = "set GIT_TERMINAL_PROMPT=0 && " . $command;
+        } else {
+            $command = "export GIT_TERMINAL_PROMPT=0 && " . $command;
+        }
+
         $process = proc_open($command, [
             1 => ['pipe', 'w'],
             2 => ['pipe', 'w'],
