@@ -110,14 +110,8 @@ class UpdateSettingsController extends Controller
                 $composerResult = $this->runShell('composer install --no-dev --optimize-autoloader --no-interaction 2>&1', $basePath);
                 $output .= $composerResult['output'] . "\n";
 
-                // NPM install & build (rebuild Tailwind CSS + Vite assets)
-                $output .= "  > npm install...\n";
-                $npmInstallResult = $this->runShell('npm install 2>&1', $basePath);
-                $output .= $npmInstallResult['output'] . "\n";
-
-                $output .= "  > npm run build...\n";
-                $npmBuildResult = $this->runShell('npm run build 2>&1', $basePath);
-                $output .= $npmBuildResult['output'] . "\n";
+                // Note: npm build is not needed on this hosting because
+                // public/build assets are committed to the git repository
 
                 // Run migrations
                 $output .= "  > php artisan migrate --force...\n";
