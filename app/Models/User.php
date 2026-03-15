@@ -30,6 +30,8 @@ class User extends Authenticatable
         'dob',
         'current_school',
         'nisn',
+        'is_active',
+        'activation_token',
     ];
 
     public function isProfileComplete(): bool

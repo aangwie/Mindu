@@ -58,9 +58,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Questions CRUD
     Route::resource('questions', QuestionController::class);
 
-    // Users Management
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    // Users Management (Full CRUD)
+    Route::resource('users', UserController::class);
 
     // Results Management
     Route::get('/results', [ResultController::class, 'index'])->name('results.index');
