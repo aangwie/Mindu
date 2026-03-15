@@ -1,4 +1,69 @@
 <x-admin-layout>
+    {{-- Vite Dev Server Status Indicator --}}
+    <div x-data="viteStatus()" x-init="checkVite()" class="mb-6">
+        {{-- Warning Banner (Vite NOT running) --}}
+        <div x-show="status === 'down'" x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             style="background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #f87171; border-radius: 16px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);">
+            {{-- Animated pulse icon --}}
+            <div style="position: relative; flex-shrink: 0; margin-top: 2px;">
+                <span style="display: block; width: 12px; height: 12px; background: #ef4444; border-radius: 50%; animation: pulse-red 1.5s ease-in-out infinite;"></span>
+                <span style="position: absolute; top: -4px; left: -4px; width: 20px; height: 20px; background: rgba(239, 68, 68, 0.3); border-radius: 50%; animation: ping-red 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+            </div>
+            <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                    <span style="font-weight: 700; font-size: 14px; color: #991b1b;">⚠️ Vite Dev Server Tidak Aktif</span>
+                </div>
+                <p style="font-size: 13px; color: #b91c1c; margin: 0 0 8px 0; line-height: 1.5;">
+                    <strong>npm run dev</strong> belum dijalankan. Sidebar dan beberapa fitur UI tidak akan berfungsi dengan baik.
+                </p>
+                <div style="background: #7f1d1d; border-radius: 8px; padding: 8px 14px; font-family: 'Courier New', monospace; font-size: 13px; color: #fca5a5; display: inline-block;">
+                    <span style="color: #86efac;">$</span> npm run dev
+                </div>
+            </div>
+        </div>
+
+        {{-- Success Banner (Vite IS running) --}}
+        <div x-show="status === 'up'" x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl px-5 py-3 flex items-center gap-3">
+            <span class="relative flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+            <span class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                ✅ Vite Dev Server Aktif
+            </span>
+            <span class="text-xs text-emerald-500 dark:text-emerald-500 ml-auto">
+                npm run dev berjalan
+            </span>
+        </div>
+
+        {{-- Checking Banner --}}
+        <div x-show="status === 'checking'" x-cloak
+             class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-5 py-3 flex items-center gap-3">
+            <svg class="animate-spin h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <span class="text-sm text-slate-500 dark:text-slate-400">Memeriksa status Vite Dev Server...</span>
+        </div>
+
+        <style>
+            @keyframes pulse-red {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+            }
+            @keyframes ping-red {
+                75%, 100% { transform: scale(2); opacity: 0; }
+            }
+        </style>
+    </div>
+
     <div class="mb-8">
         <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Dashboard</h2>
         <p class="text-slate-600 dark:text-slate-400 font-medium">Selamat datang kembali, {{ auth()->user()->full_name }}. Berikut ringkasan sistem hari ini.</p>
@@ -74,4 +139,60 @@
             </a>
         </div>
     </div>
+
+    {{-- Hidden probe element to test if Tailwind CSS is loaded --}}
+    <div id="vite-probe" class="hidden bg-blue-500" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;"></div>
+
+    <script>
+        function viteStatus() {
+            return {
+                status: 'checking',
+                intervalId: null,
+
+                checkVite() {
+                    // Small delay to let styles load
+                    setTimeout(() => this.doCheck(), 500);
+                    // Re-check every 10 seconds
+                    this.intervalId = setInterval(() => this.doCheck(), 10000);
+                },
+
+                doCheck() {
+                    // Method 1: Check if Vite HMR styles are injected (dev mode)
+                    var viteHmrStyles = document.querySelectorAll('style[data-vite-dev-id]');
+                    if (viteHmrStyles.length > 0) {
+                        this.status = 'up';
+                        return;
+                    }
+
+                    // Method 2: Check if built assets are loaded (production mode)
+                    var builtAssets = document.querySelectorAll('link[href*="/build/"], script[src*="/build/"]');
+                    if (builtAssets.length > 0) {
+                        this.status = 'up';
+                        return;
+                    }
+
+                    // Method 3: Check if Tailwind CSS is actually working
+                    // Test by checking if our probe element has Tailwind-compiled styles
+                    var probe = document.getElementById('vite-probe');
+                    if (probe) {
+                        var computed = window.getComputedStyle(probe);
+                        var bgColor = computed.backgroundColor;
+                        // bg-blue-500 should compile to rgb(59, 130, 246) if Tailwind is loaded
+                        if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+                            this.status = 'up';
+                            return;
+                        }
+                    }
+
+                    // If none of the checks passed, Vite/npm is not running
+                    this.status = 'down';
+                },
+
+                destroy() {
+                    if (this.intervalId) clearInterval(this.intervalId);
+                }
+            }
+        }
+    </script>
+
 </x-admin-layout>
