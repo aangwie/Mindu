@@ -7,9 +7,8 @@
 
     <title>{{ config('app.name', 'Mindu') }} - Siswa</title>
     
-    @if($favicon = \App\Models\Setting::get('site_favicon'))
-        <link rel="icon" type="image/x-icon" href="{{ $favicon }}">
-    @endif
+    @php $siteLogoFav = \App\Models\Setting::get('site_logo'); @endphp
+    <link rel="icon" type="image/x-icon" href="{{ $siteLogoFav ?: asset('favicon.ico') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

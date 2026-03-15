@@ -16,6 +16,8 @@ class TestResultController extends Controller
             abort(403);
         }
 
+        $result->load('majors');
+
         $user = $result->testSession->user;
         $logo = Setting::get('site_logo');
         $address = Setting::get('site_address', 'Alamat belum diatur di pengaturan.');
@@ -25,6 +27,7 @@ class TestResultController extends Controller
             'user' => $user,
             'logo' => $logo,
             'address' => $address,
+            'recommendationDetails' => $result->getRecommendationDetails(),
         ]);
 
         return $pdf->download("Hasil_Psikotest_{$user->full_name}.pdf");

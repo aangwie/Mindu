@@ -137,7 +137,7 @@
             margin-top: 20px;
         }
         .recommendation-value {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 900;
             color: #1d4ed8;
             margin: 8px 0;
@@ -149,6 +149,46 @@
             margin-top: 12px;
             line-height: 1.6;
         }
+
+        /* Major recommendation table */
+        .major-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+        .major-table th {
+            background-color: #1e40af;
+            color: #ffffff;
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .major-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            vertical-align: top;
+        }
+        .major-rank {
+            text-align: center;
+            font-weight: 900;
+            font-size: 14px;
+            width: 35px;
+        }
+        .major-rank-1 { color: #ca8a04; }
+        .major-rank-2 { color: #64748b; }
+        .major-rank-3 { color: #b45309; }
+        .level-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .level-sma { background-color: #dcfce7; color: #16a34a; }
+        .level-smk { background-color: #dbeafe; color: #2563eb; }
 
         /* Footer */
         .footer {
@@ -278,6 +318,36 @@
             <td>Individu yang terorganisir, teliti, dan menyukai pekerjaan yang terstruktur. Memiliki kemampuan administratif yang baik dan senang bekerja dengan data, angka, dan sistem. Cenderung mengikuti aturan dan prosedur yang jelas. Detail-oriented dan dapat diandalkan. Contoh karir: Akuntan, Sekretaris, Analis Data, Pegawai Bank, dan Administrator.</td>
         </tr>
     </table>
+
+    <!-- Recommended Majors -->
+    @if(!empty($recommendationDetails) && count($recommendationDetails) > 0)
+    <div class="section-title">3 Jurusan Terbaik untuk Anda</div>
+    <table class="major-table">
+        <thead>
+            <tr>
+                <th style="width: 35px; text-align: center;">#</th>
+                <th style="width: 60px;">Level</th>
+                <th>Jurusan</th>
+                <th style="width: 55px; text-align: center;">Skor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($recommendationDetails as $detail)
+            <tr style="background-color: {{ $detail['rank'] == 1 ? '#fffbeb' : ($detail['rank'] == 2 ? '#f8fafc' : '#fffbeb') }};">
+                <td class="major-rank major-rank-{{ $detail['rank'] }}">
+                    @if($detail['rank'] == 1) 🥇 @elseif($detail['rank'] == 2) 🥈 @else 🥉 @endif
+                </td>
+                <td><span class="level-badge level-{{ strtolower($detail['level']) }}">{{ $detail['level'] }}</span></td>
+                <td>
+                    <strong>{{ $detail['major'] }}</strong><br>
+                    <span style="font-size: 11px; color: #64748b;">{{ $detail['description'] }}</span>
+                </td>
+                <td style="text-align: center; font-weight: bold; color: #1d4ed8;">{{ $detail['match_score'] }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+    @endif
 
     <!-- Recommendation -->
     <div class="section-title">Rekomendasi Akhir</div>

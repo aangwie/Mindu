@@ -229,6 +229,16 @@ class StudentController extends Controller
             'final_reasoning' => $recommendationData['reasoning'],
         ]);
 
+        // Attach recommended majors with rank and match score
+        if (!empty($recommendationData['recommended_majors'])) {
+            foreach ($recommendationData['recommended_majors'] as $index => $majorData) {
+                $result->majors()->attach($majorData['major_id'], [
+                    'rank' => $index + 1,
+                    'match_score' => $majorData['match_score'],
+                ]);
+            }
+        }
+
         $session->update([
             'status' => 'completed',
             'completed_at' => now(),
@@ -247,8 +257,11 @@ class StudentController extends Controller
             abort(403);
         }
 
+        $result->load('majors');
+
         return view('student.result', [
-            'result' => $result
+            'result' => $result,
+            'recommendationDetails' => $result->getRecommendationDetails(),
         ]);
     }
 }
